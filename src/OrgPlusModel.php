@@ -2,6 +2,10 @@
 
 namespace NetworkRailBusinessSystems\OrgPlus;
 
+/**
+ * @property array<string, OrgPlusModel> $children
+ * @property ?OrgPlusModel $parent
+ */
 abstract class OrgPlusModel
 {
     public const array CAST_MAP = [];
@@ -11,6 +15,11 @@ abstract class OrgPlusModel
     public array $children = [];
 
     public ?OrgPlusModel $parent = null;
+
+    final public function __construct()
+    {
+        //
+    }
 
     public static function make(array $row): self
     {

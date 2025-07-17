@@ -6,8 +6,6 @@ use Spatie\SimpleExcel\SimpleExcelReader;
 
 class OrgPlus
 {
-
-
     public array $upns = [];
 
     // Import
@@ -26,7 +24,7 @@ class OrgPlus
         return $orgPlus;
     }
 
-    public function validateHeaders(SimpleExcelReader $csv): self
+    public function validateHeaders(SimpleExcelReader $csv): void
     {
         $headers = $csv->getHeaders();
         $expectedHeaders = config('orgplus.required_headers', ['UPN']);
@@ -43,20 +41,16 @@ class OrgPlus
                 'The following headers are missing from the CSV: ' . implode(', ', $missingHeaders),
             );
         }
-
-        return $this;
     }
 
-    public function gatherRows(SimpleExcelReader $csv): self
+    public function gatherRows(SimpleExcelReader $csv): void
     {
         $csv->getRows()->each(function (array $row) {
             $this->upns[$row['UPN']] = Upn::make($row);
         });
-
-        return $this;
     }
 
-    public function matchRows(): self
+    public function matchRows(): void
     {
         // TODO Nesting and hierarchy, when relevant fields present
     }

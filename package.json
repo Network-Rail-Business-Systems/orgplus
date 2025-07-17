@@ -1,9 +1,8 @@
 {
-    "type": "module",
     "name": "orgplus",
     "description": "Import the OrgPlus organisational CSV into a structured series of related objects",
     "scripts": {
-        "badges": "php vendor/networkrailbusinesssystems/badges/badges.php",
+        "badges": "php ./vendor/networkrailbusinesssystems/badges/badges.php",
         "larastan": "php ./vendor/bin/phpstan analyse --memory-limit=256M",
         "pint": "php ./vendor/bin/pint --preset=per",
         "test": "php ./vendor/bin/phpunit"
