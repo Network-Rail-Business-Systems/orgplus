@@ -58,7 +58,7 @@ abstract class OrgPlusModel
             return;
         }
 
-        $field = $model::REQUIRED_KEY;
+        $field = $model::FIELD_MAP[$model::REQUIRED_KEY];
         $key = $model->$field;
         $this->$relation[$key] = $model;
     }

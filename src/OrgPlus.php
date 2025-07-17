@@ -36,7 +36,7 @@ class OrgPlus
     public function validateHeaders(SimpleExcelReader $csv): void
     {
         $headers = $csv->getHeaders();
-        $expectedHeaders = config('orgplus.required_headers', ['UPN']);
+        $expectedHeaders = config('orgplus.required_headers', []);
         $missingHeaders = [];
 
         foreach ($expectedHeaders as $expected) {
