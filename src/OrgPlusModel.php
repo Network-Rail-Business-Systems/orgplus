@@ -12,10 +12,14 @@ abstract class OrgPlusModel
 
     public const array FIELD_MAP = [];
 
+    public const string REQUIRED_KEY = '';
+
+    // Relationships
     public array $children = [];
 
     public ?OrgPlusModel $parent = null;
 
+    // Construction
     final public function __construct()
     {
         //
@@ -25,9 +29,10 @@ abstract class OrgPlusModel
     {
         $model = new static();
 
-        foreach ($row as $key => $value) {
-            $field = static::FIELD_MAP[$key];
-            $model->$field = $model->cast($key, $value);
+        foreach (static::FIELD_MAP as $key => $field) {
+            if (array_key_exists($key, $row) === true) {
+                $model->$field = $model->cast($key, $row[$key]);
+            }
         }
 
         return $model;
@@ -42,5 +47,19 @@ abstract class OrgPlusModel
                 : null,
             default => $value,
         };
+    }
+
+    // Relationships
+    public function addRelation(
+        ?OrgPlusModel $model,
+        string $relation,
+    ): void {
+        if ($model === null) {
+            return;
+        }
+
+        $field = $model::REQUIRED_KEY;
+        $key = $model->$field;
+        $this->$relation[$key] = $model;
     }
 }

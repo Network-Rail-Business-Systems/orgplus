@@ -4,7 +4,7 @@ namespace NetworkRailBusinessSystems\OrgPlus;
 
 use ErrorException;
 
-class MissingHeaderException extends ErrorException
+class MissingHeadersException extends ErrorException
 {
     //
 }

@@ -65,6 +65,8 @@ class Upn extends OrgPlusModel
         'UPN' => 'code',
     ];
 
+    public const string REQUIRED_KEY = 'UPN';
+
     // Fields
     public ?string $area = null;
 

@@ -32,6 +32,8 @@ class Person extends OrgPlusModel
         'PSE_NUMBER' => 'pseNumber',
     ];
 
+    public const string REQUIRED_KEY = 'EMAIL_ADDRESS';
+
     // Fields
     public ?string $email = null;
 

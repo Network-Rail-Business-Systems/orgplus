@@ -18,6 +18,8 @@ class CostCentre extends OrgPlusModel
         'COST_CENTRE' => 'code',
     ];
 
+    public const string REQUIRED_KEY = 'COST_CENTRE';
+
     // Fields
     public ?int $code = null;
 
