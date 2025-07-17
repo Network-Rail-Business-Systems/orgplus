@@ -1,0 +1,35 @@
+{
+    "name": "networkrailbusinesssystems/orgplus",
+    "description": "Import the OrgPlus CSV",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "NetworkRailBusinessSystems\\OrgPlus\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "NetworkRailBusinessSystems\\OrgPlus\\Tests\\": "tests/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Anthony Edmonds",
+            "email": "anthony.edmonds@networkrail.co.uk"
+        }
+    ],
+    "require": {
+        "php": "^8.3",
+        "illuminate/support": "^12",
+        "spatie/simple-excel": "^3"
+    },
+    "require-dev": {
+        "anthonyedmonds/laravel-testing-traits": "^1",
+        "larastan/larastan": "^3",
+        "laravel/pint": "^1",
+        "networkrailbusinesssystems/badges": "^1",
+        "orchestra/testbench": "^10",
+        "phpunit/phpunit": "^12"
+    }
+}
