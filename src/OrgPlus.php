@@ -5,7 +5,7 @@ namespace NetworkRailBusinessSystems\OrgPlus;
 use Spatie\SimpleExcel\SimpleExcelReader;
 
 /**
- * @property array<string, CostCentre> $costCentres
+ * @property array<int, CostCentre> $costCentres
  * @property array<string, Person> $people
  * @property array<string, Upn> $upns
  */

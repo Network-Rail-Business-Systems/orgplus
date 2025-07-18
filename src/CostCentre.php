@@ -3,7 +3,7 @@
 namespace NetworkRailBusinessSystems\OrgPlus;
 
 /**
- * @property array<string, CostCentre> $children
+ * @property array<int, CostCentre> $children
  * @property ?CostCentre $parent
  * @property array<string, Person> $people
  * @property array<string, Upn> $upns

@@ -21,7 +21,7 @@ class Person extends OrgPlusModel
     ];
 
     public const array FIELD_MAP = [
-        'EMAIL_ADDRESS' => 'emailAddress',
+        'EMAIL_ADDRESS' => 'email',
         'EMPLOYEE_NUMBER' => 'employeeNumber',
         'FIRST_NAME' => 'firstName',
         'KNOWN_AS' => 'knownAs',

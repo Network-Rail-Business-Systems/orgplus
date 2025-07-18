@@ -25,7 +25,7 @@ abstract class OrgPlusModel
         //
     }
 
-    public static function make(array $row): self
+    public static function make(array $row): static
     {
         $model = new static();
 
@@ -58,8 +58,12 @@ abstract class OrgPlusModel
             return;
         }
 
-        $field = $model::FIELD_MAP[$model::REQUIRED_KEY];
-        $key = $model->$field;
-        $this->$relation[$key] = $model;
+        if (is_array($this->$relation) === true) {
+            $field = $model::FIELD_MAP[$model::REQUIRED_KEY];
+            $key = $model->$field;
+            $this->$relation[$key] = $model;
+        } else {
+            $this->$relation = $model;
+        }
     }
 }
