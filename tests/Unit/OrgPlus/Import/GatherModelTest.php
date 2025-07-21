@@ -1,6 +1,6 @@
 <?php
 
-namespace NetworkRailBusinessSystems\OrgPlus\Tests\Unit\OrgPlus;
+namespace NetworkRailBusinessSystems\OrgPlus\Tests\Unit\OrgPlus\Import;
 
 use NetworkRailBusinessSystems\OrgPlus\OrgPlus;
 use NetworkRailBusinessSystems\OrgPlus\Tests\TestCase;

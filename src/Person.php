@@ -34,6 +34,8 @@ class Person extends OrgPlusModel
 
     public const string REQUIRED_KEY = 'EMAIL_ADDRESS';
 
+    public const string KEY_FIELD = 'email';
+
     // Fields
     public ?string $email = null;
 

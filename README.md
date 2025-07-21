@@ -21,15 +21,17 @@ The OrgPlus data will be processed and mapped to the relevant objects based on t
 * Person (requires `EMAIL_ADDRESS` field)
 * Upn (requires `UPN` field)
 
-### Cost Centre
+These objects are then held in libraries on the OrgPlus object, keyed by their required field.
+
+### Cost Centre ($orgPlus->costCentres)
 
 All information specific to an individual Cost Centre, such as code, people, and Upns.
 
-### Person
+### Person ($orgPlus->people)
 
 All information specific to an individual Person, such as name, e-mail, Cost Centre, and Upn.
 
-### Upn
+### Upn ($orgPlus->upns)
 
 All information specific to an individual Upn, such as code, job title, grade, Cost Centre, and people.
 
@@ -37,11 +39,11 @@ Bear in mind that a Upn can be shared by any number of people.
 
 Job information is typically held on the Upn, where personal information is held on the Person.
 
-## Relationships
+## Relationships and hierarchy
 
 When the relevant fields are available, OrgPlus objects will contain references to other objects.
 
-Both `UPN` and `PARENT_UPN` fields must be provided in the CSV to perform the parent and child mapping.
+Both `UPN` and `PARENT_UPN` fields must be provided in the CSV to perform the parent and child hierarchy mapping.
 
 ### Cost Centre
 
@@ -68,7 +70,28 @@ Cost Centres are related to:
 
 ## Roadmap
 
-* Hierarchy linking
-* Output rainbow lists
 * Grade filtering
 * Organisation Units
+* Nested set
+
+## Linked lists
+
+You can parse the libraries of models yourself, or you can produce a linked list of values for quick reference.
+
+These linked lists could be stored for later use in a database, or used immediately to find relevant entries in the libraries.
+
+* Cost Centre children
+* Cost Centre hierarchy
+* Cost Centre parents
+* Cost Centre People
+* Cost Centre Upns
+* Person children
+* Person Cost Centre
+* Person hierarchy
+* Person parents
+* Person Upn
+* Upn children
+* Upn hierarchy
+* Upn parents
+* Upn Cost Centre
+* Upn People

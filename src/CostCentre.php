@@ -20,6 +20,8 @@ class CostCentre extends OrgPlusModel
 
     public const string REQUIRED_KEY = 'COST_CENTRE';
 
+    public const string KEY_FIELD = 'code';
+
     // Fields
     public ?int $code = null;
 

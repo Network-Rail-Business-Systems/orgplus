@@ -14,6 +14,8 @@ abstract class OrgPlusModel
 
     public const string REQUIRED_KEY = '';
 
+    public const string KEY_FIELD = '';
+
     // Relationships
     public array $children = [];
 
@@ -77,5 +79,17 @@ abstract class OrgPlusModel
     public function addParent(OrgPlusModel $parent): void
     {
         $this->addRelation($parent, 'parents');
+    }
+
+    public function mapChildren(array &$map): array
+    {
+        $key = static::KEY_FIELD;
+        $map[$this->$key] = [];
+
+        foreach ($this->children as $child) {
+            $child->mapChildren($map[$this->$key]);
+        }
+
+        return $map;
     }
 }
