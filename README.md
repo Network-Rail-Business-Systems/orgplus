@@ -94,6 +94,5 @@ When outputting linked lists, only the first occurrence of an object within a tr
 
 ## Roadmap
 
-* Grade filtering
 * Organisation Units
 * Nested set
