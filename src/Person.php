@@ -72,11 +72,28 @@ class Person extends OrgPlusModel
 
     public function matchWithParent(array $library = []): void
     {
-        foreach ($this->upn->parents as $parentUpn) {
-            foreach ($parentUpn->people as $parent) {
-                $this->addParent($parent);
-                $parent->addChild($this);
-            }
+        $parentUpn = $this->findParentUpnWithPeople($this->upn);
+
+        if ($parentUpn === null) {
+            return;
+        }
+
+        foreach ($parentUpn->people as $parent) {
+            $this->addParent($parent);
+            $parent->addChild($this);
+        }
+    }
+
+    public function findParentUpnWithPeople(Upn $upn): ?Upn
+    {
+        if (empty($upn->parents) === true) {
+            return null;
+        }
+
+        foreach ($upn->parents as $parent) {
+            return empty($parent->people) === false
+                ? $parent
+                : $this->findParentUpnWithPeople($parent);
         }
     }
 }

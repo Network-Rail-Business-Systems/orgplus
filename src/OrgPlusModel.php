@@ -81,13 +81,17 @@ abstract class OrgPlusModel
         $this->addRelation($parent, 'parents');
     }
 
-    public function mapChildren(array &$map): array
+    public function mapChildren(array &$map, array $visited): array
     {
         $key = static::KEY_FIELD;
-        $map[$this->$key] = [];
 
-        foreach ($this->children as $child) {
-            $child->mapChildren($map[$this->$key]);
+        if (array_key_exists($this->$key, $visited) === false) {
+            $map[$this->$key] = [];
+            $visited[$this->$key] = $this->$key;
+
+            foreach ($this->children as $child) {
+                $child->mapChildren($map[$this->$key], $visited);
+            }
         }
 
         return $map;

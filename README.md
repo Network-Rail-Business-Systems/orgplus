@@ -68,12 +68,6 @@ Cost Centres are related to:
 * One Cost Centre
 * Any number of people
 
-## Roadmap
-
-* Grade filtering
-* Organisation Units
-* Nested set
-
 ## Linked lists
 
 You can parse the libraries of models yourself, or you can produce a linked list of values for quick reference.
@@ -95,3 +89,11 @@ These linked lists could be stored for later use in a database, or used immediat
 * Upn parents
 * Upn Cost Centre
 * Upn People
+
+When outputting linked lists, only the first occurrence of an object within a tree section is used to prevent infinite looping.
+
+## Roadmap
+
+* Grade filtering
+* Organisation Units
+* Nested set

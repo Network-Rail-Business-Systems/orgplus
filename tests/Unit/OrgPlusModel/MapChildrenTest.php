@@ -11,6 +11,8 @@ class MapChildrenTest extends TestCase
 
     protected Upn $model;
 
+    protected array $visited = [];
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -27,11 +29,16 @@ class MapChildrenTest extends TestCase
         $grandchild = new Upn();
         $grandchild->code = 'A456';
 
+        $recursionSkip = new Upn();
+        $recursionSkip->code = 'A567';
+
         $this->model->addChild($childOne);
         $this->model->addChild($childTwo);
         $childOne->addChild($grandchild);
+        $childOne->addChild($recursionSkip);
+        $recursionSkip->addChild($childOne);
 
-        $this->model->mapChildren($this->map);
+        $this->model->mapChildren($this->map, $this->visited);
     }
 
     public function test(): void
@@ -41,6 +48,7 @@ class MapChildrenTest extends TestCase
                 'A123' => [
                     'A234' => [
                         'A456' => [],
+                        'A567' => [],
                     ],
                     'A345' => [],
                 ],

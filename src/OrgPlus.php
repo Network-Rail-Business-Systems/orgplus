@@ -149,10 +149,11 @@ class OrgPlus
     public function makeHierarchy(array $library): array
     {
         $map = [];
+        $visited = [];
         $roots = $this->getRoots($library);
 
         foreach ($roots as $model) {
-            $model->mapChildren($map);
+            $model->mapChildren($map, $visited);
         }
 
         return $map;

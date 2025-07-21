@@ -6,11 +6,13 @@ use NetworkRailBusinessSystems\OrgPlus\Tests\TestCase;
 use NetworkRailBusinessSystems\OrgPlus\Person;
 use NetworkRailBusinessSystems\OrgPlus\Upn;
 
-class MatchWithParentTest extends TestCase
+class FindParentUpnWithPeopleTest extends TestCase
 {
     protected Person $parent;
 
     protected Upn $parentUpn;
+
+    protected Upn $middleUpn;
 
     protected Person $person;
 
@@ -23,9 +25,12 @@ class MatchWithParentTest extends TestCase
         $this->parentUpn = new Upn();
         $this->parentUpn->code = 'A123';
 
+        $this->middleUpn = new Upn();
+        $this->middleUpn->addParent($this->parentUpn);
+
         $this->personUpn = new Upn();
         $this->personUpn->code = 'A234';
-        $this->personUpn->addParent($this->parentUpn);
+        $this->personUpn->addParent($this->middleUpn);
 
         $this->person = new Person();
         $this->person->email = 'person';
@@ -36,8 +41,6 @@ class MatchWithParentTest extends TestCase
         $this->parent->addUpn($this->parentUpn);
 
         $this->parentUpn->addPerson($this->parent);
-
-
     }
 
     public function test(): void
@@ -45,22 +48,19 @@ class MatchWithParentTest extends TestCase
         $this->person->matchWithParent();
 
         $this->assertEquals(
-            'parent',
-            $this->person->parents['parent']->email,
-        );
-
-        $this->assertEquals(
-            'person',
-            $this->parent->children['person']->email,
+            $this->parentUpn->code,
+            $this->person->findParentUpnWithPeople($this->personUpn)->code,
         );
     }
 
-    public function testSkipsWhenNoParent(): void
+    public function testNullWhenNoParents(): void
     {
-        $this->parentUpn->people = [];
+        $this->middleUpn->parents = [];
 
         $this->person->matchWithParent();
 
-        $this->assertEmpty($this->person->parents);
+        $this->assertNull(
+            $this->person->findParentUpnWithPeople($this->personUpn),
+        );
     }
 }
