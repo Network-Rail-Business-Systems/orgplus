@@ -28,7 +28,7 @@ class OrgPlus
 
         $csv->close();
 
-        $orgPlus->matchRows();
+        $orgPlus->generateHierarchy();
 
         return $orgPlus;
     }
@@ -55,23 +55,28 @@ class OrgPlus
     public function gatherRows(SimpleExcelReader $csv): void
     {
         $csv->getRows()->each(function (array $row) {
+            /** @var ?CostCentre $costCentre */
             $costCentre = $this->gatherModel(CostCentre::class, 'costCentres', $row);
+
+            /** @var ?Person $person */
             $person = $this->gatherModel(Person::class, 'people', $row);
+
+            /** @var ?Upn $upn */
             $upn = $this->gatherModel(Upn::class, 'upns', $row);
 
             if ($costCentre !== null) {
-                $costCentre->addRelation($person, 'people');
-                $costCentre->addRelation($upn, 'upns');
+                $costCentre->addPerson($person);
+                $costCentre->addUpn($upn);
             }
 
             if ($person !== null) {
-                $person->addRelation($costCentre, 'costCentre');
-                $person->addRelation($upn, 'upn');
+                $person->addCostCentre($costCentre);
+                $person->addUpn($upn);
             }
 
             if ($upn !== null) {
-                $upn->addRelation($costCentre, 'costCentre');
-                $upn->addRelation($person, 'people');
+                $upn->addCostCentre($costCentre);
+                $upn->addPerson($person);
             }
         });
     }
@@ -99,8 +104,26 @@ class OrgPlus
         return $this->$library[$key];
     }
 
-    public function matchRows(): void
+    // Hierarchy
+    public function generateHierarchy(): void
     {
-        // TODO Nesting and hierarchy, when relevant fields present
+        if (empty($this->upns) === true) {
+            return;
+        }
+
+        $this->pairModels($this->upns, $this->upns);
+        $this->pairModels($this->costCentres);
+        $this->pairModels($this->people);
+    }
+
+    public function pairModels(array $library, array $support = []): void
+    {
+        if (empty($library) === true) {
+            return;
+        }
+
+        foreach ($library as $model) {
+            $model->matchWithParent($support);
+        }
     }
 }

@@ -4,7 +4,7 @@ namespace NetworkRailBusinessSystems\OrgPlus;
 
 /**
  * @property array<string, Upn> $children
- * @property ?Upn $parent
+ * @property array<string, Upn> $parents
  * @property array<string, Person> $people
  */
 class Upn extends OrgPlusModel
@@ -122,4 +122,30 @@ class Upn extends OrgPlusModel
     public ?CostCentre $costCentre = null;
 
     public array $people = [];
+
+    public function addCostCentre(?CostCentre $costCentre): void
+    {
+        $this->addRelation($costCentre, 'costCentre');
+    }
+
+    public function addPerson(?Person $person): void
+    {
+        $this->addRelation($person, 'people');
+    }
+
+    public function matchWithParent(array $library = []): void
+    {
+        if ($this->parentUpn === null) {
+            return;
+        }
+
+        if (array_key_exists($this->parentUpn, $library) === false) {
+            return;
+        }
+
+        $parent = $library[$this->parentUpn];
+
+        $this->addParent($parent);
+        $parent->addChild($this);
+    }
 }

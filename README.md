@@ -39,28 +39,27 @@ Both `UPN` and `PARENT_UPN` fields must be provided in the CSV to perform the pa
 
 Cost Centres are related to:
 
-* One parent Cost Centre
+* Any number of parent Cost Centres
 * Any number of child Cost Centres
 * Any number of Upns
-* Any number of Persons
+* Any number of people
 
 ### Person
 
-* One parent Person
-* Any number of child Persons
+* Any number of parent people
+* Any number of child people
 * One UPN
 * One Cost Centre
 
 ### Upn
 
-* One parent Upn
+* Any number of parent Upns
 * Any number of child Upns
 * One Cost Centre
-* Any number of People
+* Any number of people
 
 ## Roadmap
 
-* Base related object import
 * Hierarchy linking
 * Output rainbow lists
 * Grade filtering

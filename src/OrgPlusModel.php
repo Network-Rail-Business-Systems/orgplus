@@ -4,7 +4,7 @@ namespace NetworkRailBusinessSystems\OrgPlus;
 
 /**
  * @property array<string, OrgPlusModel> $children
- * @property ?OrgPlusModel $parent
+ * @property array<string, OrgPlusModel> $parents
  */
 abstract class OrgPlusModel
 {
@@ -17,7 +17,7 @@ abstract class OrgPlusModel
     // Relationships
     public array $children = [];
 
-    public ?OrgPlusModel $parent = null;
+    public array $parents = [];
 
     // Construction
     final public function __construct()
@@ -50,6 +50,8 @@ abstract class OrgPlusModel
     }
 
     // Relationships
+    abstract public function matchWithParent(array $library = []): void;
+
     public function addRelation(
         ?OrgPlusModel $model,
         string $relation,
@@ -65,5 +67,15 @@ abstract class OrgPlusModel
         } else {
             $this->$relation = $model;
         }
+    }
+
+    public function addChild(OrgPlusModel $child): void
+    {
+        $this->addRelation($child, 'children');
+    }
+
+    public function addParent(OrgPlusModel $parent): void
+    {
+        $this->addRelation($parent, 'parents');
     }
 }

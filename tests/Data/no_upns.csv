@@ -1,0 +1,10 @@
+COST_CENTRE,EMAIL_ADDRESS,UPN,PARENT_UPN
+12345,a@b.com,"",""
+12345,b@c.com,"",""
+12345,c@d.com,"",""
+23456,d@e.com,"",""
+23456,e@f.com,"",""
+45678,f@g.com,"",""
+34567,g@h.com,"",""
+34567,h@i.com,"",""
+56789,i@j.com,"",""
