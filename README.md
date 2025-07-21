@@ -1,4 +1,12 @@
 # OrgPlus
+
+![Composer status](.github/composer.svg)
+![Coverage status](.github/coverage.svg)
+![Laravel version](.github/laravel.svg)
+![NPM status](.github/npm.svg)
+![PHP version](.github/php.svg)
+![Tests status](.github/tests.svg)
+
 Import the OrgPlus organisational CSV into a structured series of related objects
 
 ## Installation
