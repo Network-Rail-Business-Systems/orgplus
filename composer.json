@@ -31,5 +31,12 @@
         "networkrailbusinesssystems/badges": "^1",
         "orchestra/testbench": "^10",
         "phpunit/phpunit": "^12"
+    },
+     "extra": {
+        "laravel": {
+            "providers": [
+                "NetworkRailBusinessSystems\\OrgPlus\\OrgPlusServiceProvider"
+            ]
+        }
     }
 }
