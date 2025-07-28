@@ -2,6 +2,7 @@
 
 namespace NetworkRailBusinessSystems\OrgPlus;
 
+use Illuminate\Http\UploadedFile;
 use Spatie\SimpleExcel\SimpleExcelReader;
 
 /**
@@ -18,9 +19,17 @@ class OrgPlus
     public array $upns = [];
 
     // Import
-    public static function import(string $path): self
+    public static function import(UploadedFile|string $file, ?string $type = null): self
     {
-        $csv = SimpleExcelReader::create($path);
+        if ($file instanceof UploadedFile === true) {
+            $path = $file->path();
+            $type = $type ?? $file->extension();
+        } else {
+            $path = $file;
+            $type = $type ?? 'csv';
+        }
+
+        $csv = SimpleExcelReader::create($path, $type);
 
         $orgPlus = new self();
         $orgPlus->validateHeaders($csv);
