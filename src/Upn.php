@@ -4,6 +4,7 @@ namespace NetworkRailBusinessSystems\OrgPlus;
 
 /**
  * @property array<string, Upn> $children
+ * @property array<string, Upn> $hrManages
  * @property array<string, Upn> $parents
  * @property array<string, Person> $people
  */
@@ -123,6 +124,10 @@ class Upn extends OrgPlusModel
     // Relations
     public ?CostCentre $costCentre = null;
 
+    public ?Upn $hrManager = null;
+
+    public array $hrManages = [];
+
     public array $people = [];
 
     public function addCostCentre(?CostCentre $costCentre): void
@@ -130,11 +135,22 @@ class Upn extends OrgPlusModel
         $this->addRelation($costCentre, 'costCentre');
     }
 
+    public function addHrManager(?Upn $upn): void
+    {
+        $this->addRelation($upn, 'hrManager');
+    }
+
+    public function addHrManages(?Upn $upn): void
+    {
+        $this->addRelation($upn, 'hrManages');
+    }
+
     public function addPerson(?Person $person): void
     {
         $this->addRelation($person, 'people');
     }
 
+    /** @param array<string, OrgPlusModel> $library */
     public function matchWithParent(array $library = []): void
     {
         if ($this->parentUpn === null) {
@@ -149,5 +165,22 @@ class Upn extends OrgPlusModel
 
         $this->addParent($parent);
         $parent->addChild($this);
+    }
+
+    /**
+     * @param array<string, CostCentre> $costCentres
+     * @param array<string, Person> $people
+     * @param array<string, Upn> $upns
+     */
+    public function matchWithRelated(array $costCentres, array $people, array $upns): void
+    {
+        if (
+            empty($this->orgHrManager) === false
+            && array_key_exists($this->orgHrManager, $upns)
+        ) {
+            $hrManager = $upns[$this->orgHrManager];
+            $this->addHrManager($hrManager);
+            $hrManager->addHrManages($this);
+        }
     }
 }

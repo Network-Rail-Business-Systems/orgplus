@@ -67,6 +67,8 @@ Cost Centres are related to:
 * Any number of child Upns
 * One Cost Centre
 * Any number of people
+* An HR Manager Upn
+* Any number of HR managed Upns
 
 ## Linked lists
 
@@ -82,10 +84,12 @@ These linked lists could be stored for later use in a database, or used immediat
 * Person children
 * Person Cost Centre
 * Person hierarchy
+* Person hr managers
 * Person parents
 * Person Upn
 * Upn children
 * Upn hierarchy
+* Upn hr managers
 * Upn parents
 * Upn Cost Centre
 * Upn People
@@ -96,3 +100,4 @@ When outputting linked lists, only the first occurrence of an object within a tr
 
 * Organisation Units
 * Nested set
+* Check pairing loopback / cycle protection

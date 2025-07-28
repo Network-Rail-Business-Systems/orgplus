@@ -70,6 +70,7 @@ class Person extends OrgPlusModel
         $this->addRelation($upn, 'upn');
     }
 
+    /** @param array<string, OrgPlusModel> $library */
     public function matchWithParent(array $library = []): void
     {
         $parentUpn = $this->findParentUpnWithPeople($this->upn);
@@ -95,5 +96,15 @@ class Person extends OrgPlusModel
                 ? $parent
                 : $this->findParentUpnWithPeople($parent);
         }
+    }
+
+    /**
+     * @param array<string, CostCentre> $costCentres
+     * @param array<string, Person> $people
+     * @param array<string, Upn> $upns
+     */
+    public function matchWithRelated(array $costCentres, array $people, array $upns): void
+    {
+        //
     }
 }

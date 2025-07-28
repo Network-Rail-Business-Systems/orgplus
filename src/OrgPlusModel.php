@@ -52,7 +52,15 @@ abstract class OrgPlusModel
     }
 
     // Relationships
+    /** @param array<string, OrgPlusModel> $library */
     abstract public function matchWithParent(array $library = []): void;
+
+    /**
+     * @param array<string, CostCentre> $costCentres
+     * @param array<string, Person> $people
+     * @param array<string, Upn> $upns
+     */
+    abstract public function matchWithRelated(array $costCentres, array $people, array $upns): void;
 
     public function addRelation(
         ?OrgPlusModel $model,

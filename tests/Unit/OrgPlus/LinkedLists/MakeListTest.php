@@ -2,8 +2,10 @@
 
 namespace NetworkRailBusinessSystems\OrgPlus\Tests\Unit\OrgPlus\LinkedLists;
 
+use NetworkRailBusinessSystems\OrgPlus\CostCentre;
 use NetworkRailBusinessSystems\OrgPlus\OrgPlus;
 use NetworkRailBusinessSystems\OrgPlus\Tests\TestCase;
+use NetworkRailBusinessSystems\OrgPlus\Upn;
 
 class MakeListTest extends TestCase
 {
@@ -53,6 +55,23 @@ class MakeListTest extends TestCase
                 'A890' => 56789,
             ],
             $this->orgPlus->makeList($this->orgPlus->upns, 'code', 'costCentre', 'code'),
+        );
+    }
+
+    public function testWhenRelatedDistant(): void
+    {
+        $this->assertEquals(
+            [
+                'A123' => 12345,
+                'A234' => 12345,
+                'A345' => 23456,
+                'A456' => 23456,
+                'A567' => 45678,
+                'A678' => 34567,
+                'A789' => 34567,
+                'A890' => 56789,
+            ],
+            $this->orgPlus->makeList($this->orgPlus->upns, Upn::KEY_FIELD, 'people.costCentre', CostCentre::KEY_FIELD),
         );
     }
 }

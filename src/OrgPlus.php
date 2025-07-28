@@ -28,6 +28,7 @@ class OrgPlus
 
         $csv->close();
 
+        $orgPlus->linkLibraries();
         $orgPlus->generateHierarchy();
 
         return $orgPlus;
@@ -104,6 +105,21 @@ class OrgPlus
         return $this->$library[$key];
     }
 
+    // Relationships
+    public function linkLibraries(): void
+    {
+        $this->linkModels($this->costCentres);
+        $this->linkModels($this->people);
+        $this->linkModels($this->upns);
+    }
+
+    public function linkModels(array $library): void
+    {
+        foreach ($library as $model) {
+            $model->matchWithRelated($this->costCentres, $this->people, $this->upns);
+        }
+    }
+
     // Hierarchy
     public function generateHierarchy(): void
     {
@@ -161,12 +177,31 @@ class OrgPlus
 
     public function makeList(array $library, string $key, string $relationship, string $valueKey): array
     {
+        $hasNestedRelationship = false;
         $list = [];
+        $steps = [];
+
+        if (str_contains($relationship, '.') === true) {
+            $hasNestedRelationship = true;
+            $steps = explode('.', $relationship);
+        }
 
         foreach ($library as $model) {
-            $list[$model->$key] = is_array($model->$relationship) === true
-                ? array_column($model->$relationship, $valueKey)
-                : $model->$relationship->$valueKey;
+            if ($hasNestedRelationship === false) {
+                $related = $model->$relationship;
+            } else {
+                $related = $model;
+
+                foreach ($steps as $step) {
+                    $related = $related->$step;
+
+                    // TODO Handle array at step - Defer to object to get values from relationship passing back
+                }
+            }
+
+            $list[$model->$key] = is_array($related) === true
+                ? array_column($related, $valueKey)
+                : $related->$valueKey;
         }
 
         return $list;
@@ -220,6 +255,12 @@ class OrgPlus
         return $this->makeHierarchy($this->people);
     }
 
+    /** @returns array<string, ?string> E-mail => HR Manager E-mail */
+    public function personHrManagers(): array
+    {
+        return $this->makeList($this->people, Person::KEY_FIELD, 'upn.hrManager', Person::KEY_FIELD);
+    }
+
     /** @returns array<string, string[]> E-mail => [Parent E-mails] */
     public function personParents(): array
     {
@@ -248,6 +289,12 @@ class OrgPlus
     public function upnHierarchy(): array
     {
         return $this->makeHierarchy($this->upns);
+    }
+
+    /** @returns array<string, string> Upn => HR Manager Upn */
+    public function upnHrManagers(): array
+    {
+        return $this->makeList($this->upns, Upn::KEY_FIELD, 'hrManager', Upn::KEY_FIELD);
     }
 
     /** @returns array<string, ?string> Upn => [Parent Upns] */
