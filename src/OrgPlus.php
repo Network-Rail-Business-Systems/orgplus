@@ -175,7 +175,7 @@ class OrgPlus
         foreach ($library as $model) {
             $list[$model->$key] = is_array($model->$relationship) === true
                 ? array_column($model->$relationship, $valueKey)
-                : $model->$relationship->$valueKey;
+                : $model->$relationship?->$valueKey;
         }
 
         return $list;
