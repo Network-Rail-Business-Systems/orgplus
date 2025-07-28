@@ -13,7 +13,9 @@ Import the OrgPlus organisational CSV into a structured series of related object
 
 ## Usage
 
-Call `$orgPlus = OrgPlus::upload($path)` on the controller where you are uploading the OrgPlus CSV.
+Call `$orgPlus = OrgPlus::upload($file)` on the controller where you are uploading the OrgPlus CSV.
+
+The `$file` variable can be either a `UploadedFile` or a string path.
 
 The OrgPlus data will be processed and mapped to the relevant objects based on the fields provided.
 
