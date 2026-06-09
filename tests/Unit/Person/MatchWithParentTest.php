@@ -36,8 +36,6 @@ class MatchWithParentTest extends TestCase
         $this->parent->addUpn($this->parentUpn);
 
         $this->parentUpn->addPerson($this->parent);
-
-
     }
 
     public function test(): void
@@ -53,6 +51,15 @@ class MatchWithParentTest extends TestCase
             'person',
             $this->parent->children['person']->email,
         );
+    }
+
+    public function testSkipsWhenNoUpn(): void
+    {
+        $this->person->upn = null;
+
+        $this->person->matchWithParent();
+
+        $this->assertEmpty($this->person->parents);
     }
 
     public function testSkipsWhenNoParent(): void

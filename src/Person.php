@@ -72,6 +72,10 @@ class Person extends OrgPlusModel
 
     public function matchWithParent(array $library = []): void
     {
+        if ($this->upn === null) {
+            return;
+        }
+
         $parentUpn = $this->findParentUpnWithPeople($this->upn);
 
         if ($parentUpn === null) {
