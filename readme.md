@@ -136,6 +136,16 @@ These linked lists could be stored for later use in a database, or used immediat
 
 When outputting linked lists, only the first occurrence of an object within a tree section is used to prevent infinite looping.
 
-## Roadmap
+## Adjacency lists
 
-* Nested set
+You can create adjacency lists for hierarchical queries and lookups using the following methods:
+
+| Method                    | Key     | Value                    |
+|---------------------------|---------|--------------------------|
+| costCentreAdjacency       | 12345   | /12345/23456/34567       |
+| organisationUnitAdjacency | Aaa     | /Aaa/Bbb/Ccc             |
+| personAdjacency           | a@b.com | /a@b.com/b@c.com/c@d.com |
+| personUpnAdjacency        | a@b.com | /A123/A234/A345          |
+| upnAdjacency              | A123    | /A123/A234/A345          |
+
+The delimiter, `/` by default, can be customised as needed.

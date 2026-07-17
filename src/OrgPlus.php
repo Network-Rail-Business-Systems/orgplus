@@ -344,4 +344,67 @@ class OrgPlus
     {
         return $this->makeList($this->upns, Upn::KEY_FIELD, 'people', Person::KEY_FIELD);
     }
+
+    // Adjacency lists
+    /** @return array<int, string> Cost Centre => /12345/56789/01234 */
+    public function costCentreAdjacency(string $delimiter = '/'): array
+    {
+        return $this->makeAdjacencyList($this->costCentreHierarchy(), null, $delimiter);
+    }
+
+    /** @return array<string, string> Organisation Unit => /Aaa/Bbb/Ccc */
+    public function organisationUnitAdjacency(string $delimiter = '/'): array
+    {
+        return $this->makeAdjacencyList($this->organisationUnitHierarchy(), null, $delimiter);
+    }
+
+    /** @return array<string, string> E-mail => /a@b.com/b@c.com/c@d.com */
+    public function personAdjacency(string $delimiter = '/'): array
+    {
+        return $this->makeAdjacencyList($this->personHierarchy(), null, $delimiter);
+    }
+
+    /** @return array<string, string> E-mail => /A123/A234/A345 */
+    public function personUpnAdjacency(string $delimiter = '/'): array
+    {
+        return $this->makeAdjacencyList(
+            $this->personHierarchy(),
+            $this->personUpn(),
+            $delimiter,
+        );
+    }
+
+    /** @return array<string, string> Upn => /A123/A234/A345 */
+    public function upnAdjacency(string $delimiter = '/'): array
+    {
+        return $this->makeAdjacencyList($this->upnHierarchy(), null, $delimiter);
+    }
+
+    protected function makeAdjacencyList(array $hierarchy, ?array $related = null, string $delimiter = '/'): array
+    {
+        $list = [];
+
+        $this->makeAdjacencyItem($list, $hierarchy, $related, '', $delimiter);
+
+        return $list;
+    }
+
+    protected function makeAdjacencyItem(
+        array &$list,
+        array $hierarchy,
+        ?array $related,
+        string $adjacency,
+        string $delimiter = '/',
+    ): void {
+        foreach ($hierarchy as $key => $children) {
+            $value = $related !== null
+                ? $related[$key]
+                : $key;
+
+            $position = "$adjacency$delimiter$value";
+            $list[$key] = $position;
+
+            $this->makeAdjacencyItem($list, $children, $related, $position, $delimiter);
+        }
+    }
 }
