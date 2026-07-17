@@ -34,12 +34,12 @@ class MatchWithParentTest extends TestCase
         $this->costCentreUpn->addParent($this->blankUpn);
 
         $this->costCentre = new CostCentre();
-        $this->costCentre->code = 23456;
+        $this->costCentre->number = 23456;
         $this->costCentre->addUpn($this->costCentreUpn);
         $this->costCentre->addUpn($this->blankUpn);
 
         $this->parent = new CostCentre();
-        $this->parent->code = 12345;
+        $this->parent->number = 12345;
         $this->parent->addUpn($this->parentUpn);
 
         $this->parentUpn->addCostCentre($this->parent);
@@ -51,12 +51,12 @@ class MatchWithParentTest extends TestCase
     {
         $this->assertEquals(
             12345,
-            $this->costCentre->parents[12345]->code,
+            $this->costCentre->parents[12345]->number,
         );
 
         $this->assertEquals(
             23456,
-            $this->parent->children[23456]->code,
+            $this->parent->children[23456]->number,
         );
     }
 }

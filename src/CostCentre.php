@@ -4,6 +4,7 @@ namespace NetworkRailBusinessSystems\OrgPlus;
 
 /**
  * @property array<int, CostCentre> $children
+ * @property array<string, OrganisationUnit> $organisationUnits
  * @property array<string, CostCentre> $parents
  * @property array<string, Person> $people
  * @property array<string, Upn> $upns
@@ -11,28 +12,35 @@ namespace NetworkRailBusinessSystems\OrgPlus;
 class CostCentre extends OrgPlusModel
 {
     public const array CAST_MAP = [
-        'COST_CENTRE' => 'int',
+        self::REQUIRED_KEY => 'int',
     ];
 
     public const array FIELD_MAP = [
-        'COST_CENTRE' => 'code',
+        self::REQUIRED_KEY => 'number',
     ];
 
     public const string REQUIRED_KEY = 'COST_CENTRE';
 
-    public const string KEY_FIELD = 'code';
+    public const string KEY_FIELD = 'number';
 
     // Fields
-    public ?int $code = null;
+    public ?int $number = null;
 
     // Relations
-    public array $people = [];
+    public array $organisationUnits = [];
 
     public array $upns = [];
+
+    public array $people = [];
 
     public function addPerson(?Person $person): void
     {
         $this->addRelation($person, 'people');
+    }
+
+    public function addOrganisationUnit(?OrganisationUnit $organisationUnit): void
+    {
+        $this->addRelation($organisationUnit, 'organisationUnits');
     }
 
     public function addUpn(?Upn $upn): void
@@ -44,11 +52,11 @@ class CostCentre extends OrgPlusModel
     {
         foreach ($this->upns as $upn) {
             foreach ($upn->parents as $parentUpn) {
-                if ($parentUpn->costCentre?->code === null) {
+                if ($parentUpn->costCentre?->number === null) {
                     continue;
                 }
 
-                if ($parentUpn->costCentre->code !== $this->code) {
+                if ($parentUpn->costCentre->number !== $this->number) {
                     $this->addParent($parentUpn->costCentre);
                     $parentUpn->costCentre->addChild($this);
                 }

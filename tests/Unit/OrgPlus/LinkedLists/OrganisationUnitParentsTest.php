@@ -5,7 +5,7 @@ namespace NetworkRailBusinessSystems\OrgPlus\Tests\Unit\OrgPlus\LinkedLists;
 use NetworkRailBusinessSystems\OrgPlus\OrgPlus;
 use NetworkRailBusinessSystems\OrgPlus\Tests\TestCase;
 
-class PersonCostCentresTest extends TestCase
+class OrganisationUnitParentsTest extends TestCase
 {
     protected array $list;
 
@@ -19,14 +19,28 @@ class PersonCostCentresTest extends TestCase
             base_path('/tests/Data/hierarchy.csv'),
         );
 
-        $this->list = $this->orgPlus->personCostCentres();
+        $this->list = $this->orgPlus->organisationUnitParents();
     }
 
     public function test(): void
     {
         $this->assertEquals(
-            12345,
-            $this->list['a@b.com'],
+            [
+                'Aaa' => [],
+                'Bbb' => [
+                    'Aaa',
+                ],
+                'Ccc' => [
+                    'Bbb',
+                ],
+                'Ddd' => [
+                    'Aaa',
+                ],
+                'Eee' => [
+                    'Ddd',
+                ],
+            ],
+            $this->list,
         );
     }
 }

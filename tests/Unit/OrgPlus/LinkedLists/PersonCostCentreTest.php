@@ -5,7 +5,7 @@ namespace NetworkRailBusinessSystems\OrgPlus\Tests\Unit\OrgPlus\LinkedLists;
 use NetworkRailBusinessSystems\OrgPlus\OrgPlus;
 use NetworkRailBusinessSystems\OrgPlus\Tests\TestCase;
 
-class PersonUpnsTest extends TestCase
+class PersonCostCentreTest extends TestCase
 {
     protected array $list;
 
@@ -19,14 +19,24 @@ class PersonUpnsTest extends TestCase
             base_path('/tests/Data/hierarchy.csv'),
         );
 
-        $this->list = $this->orgPlus->personUpns();
+        $this->list = $this->orgPlus->personCostCentre();
     }
 
     public function test(): void
     {
         $this->assertEquals(
-            'A123',
-            $this->list['a@b.com'],
+            [
+                'a@b.com' => 12345,
+                'b@c.com' => 12345,
+                'c@d.com' => 12345,
+                'd@e.com' => 23456,
+                'e@f.com' => 23456,
+                'f@g.com' => 45678,
+                'g@h.com' => 34567,
+                'h@i.com' => 34567,
+                'i@j.com' => 56789,
+            ],
+            $this->list,
         );
     }
 }

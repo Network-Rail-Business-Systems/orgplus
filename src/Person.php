@@ -4,12 +4,15 @@ namespace NetworkRailBusinessSystems\OrgPlus;
 
 /**
  * @property array<string, Person> $children
+ * @property ?CostCentre $costCentre
+ * @property ?OrganisationUnit $organisationUnit
  * @property array<string, Person> $parents
+ * @property ?Upn $upn
  */
 class Person extends OrgPlusModel
 {
     public const array CAST_MAP = [
-        'EMAIL_ADDRESS' => 'string',
+        self::REQUIRED_KEY => 'string',
         'EMPLOYEE_NUMBER' => 'int',
         'FIRST_NAME' => 'string',
         'KNOWN_AS' => 'string',
@@ -21,7 +24,7 @@ class Person extends OrgPlusModel
     ];
 
     public const array FIELD_MAP = [
-        'EMAIL_ADDRESS' => 'email',
+        self::REQUIRED_KEY => 'email',
         'EMPLOYEE_NUMBER' => 'employeeNumber',
         'FIRST_NAME' => 'firstName',
         'KNOWN_AS' => 'knownAs',
@@ -58,11 +61,18 @@ class Person extends OrgPlusModel
     // Relations
     public ?CostCentre $costCentre = null;
 
+    public ?OrganisationUnit $organisationUnit = null;
+
     public ?Upn $upn = null;
 
     public function addCostCentre(?CostCentre $costCentre): void
     {
         $this->addRelation($costCentre, 'costCentre');
+    }
+
+    public function addOrganisationUnit(?OrganisationUnit $organisationUnit): void
+    {
+        $this->addRelation($organisationUnit, 'organisationUnit');
     }
 
     public function addUpn(?Upn $upn): void

@@ -7,12 +7,15 @@ use Spatie\SimpleExcel\SimpleExcelReader;
 
 /**
  * @property array<int, CostCentre> $costCentres
+ * @property array<string, OrganisationUnit> $organisationUnits
  * @property array<string, Person> $people
  * @property array<string, Upn> $upns
  */
 class OrgPlus
 {
     public array $costCentres = [];
+
+    public array $organisationUnits = [];
 
     public array $people = [];
 
@@ -67,24 +70,36 @@ class OrgPlus
             /** @var ?CostCentre $costCentre */
             $costCentre = $this->gatherModel(CostCentre::class, 'costCentres', $row);
 
-            /** @var ?Person $person */
-            $person = $this->gatherModel(Person::class, 'people', $row);
+            /** @var ?OrganisationUnit $organisationUnit */
+            $organisationUnit = $this->gatherModel(OrganisationUnit::class, 'organisationUnits', $row);
 
             /** @var ?Upn $upn */
             $upn = $this->gatherModel(Upn::class, 'upns', $row);
 
+            /** @var ?Person $person */
+            $person = $this->gatherModel(Person::class, 'people', $row);
+
             if ($costCentre !== null) {
+                $costCentre->addOrganisationUnit($organisationUnit);
                 $costCentre->addPerson($person);
                 $costCentre->addUpn($upn);
             }
 
+            if ($organisationUnit !== null) {
+                $organisationUnit->addCostCentre($costCentre);
+                $organisationUnit->addPerson($person);
+                $organisationUnit->addUpn($upn);
+            }
+
             if ($person !== null) {
                 $person->addCostCentre($costCentre);
+                $person->addOrganisationUnit($organisationUnit);
                 $person->addUpn($upn);
             }
 
             if ($upn !== null) {
                 $upn->addCostCentre($costCentre);
+                $upn->addOrganisationUnit($organisationUnit);
                 $upn->addPerson($person);
             }
         });
@@ -122,6 +137,7 @@ class OrgPlus
 
         $this->pairModels($this->upns, $this->upns);
         $this->pairModels($this->costCentres);
+        $this->pairModels($this->organisationUnits);
         $this->pairModels($this->people);
     }
 
@@ -188,9 +204,16 @@ class OrgPlus
         return $this->makeList($this->costCentres, CostCentre::KEY_FIELD, 'children', CostCentre::KEY_FIELD);
     }
 
+    /** @returns array<int, int[]> Cost Centre => [Child Cost Centres], deeply nested */
     public function costCentreHierarchy(): array
     {
         return $this->makeHierarchy($this->costCentres);
+    }
+
+    /** @returns array<int, string[]> Cost Centre => [Organisation Units] */
+    public function costCentreOrganisationUnits(): array
+    {
+        return $this->makeList($this->costCentres, CostCentre::KEY_FIELD, 'organisationUnits', OrganisationUnit::KEY_FIELD);
     }
 
     /** @returns array<int, int[]> Cost Centre => [Parent Cost Centres] */
@@ -211,6 +234,43 @@ class OrgPlus
         return $this->makeList($this->costCentres, CostCentre::KEY_FIELD, 'upns', Upn::KEY_FIELD);
     }
 
+    // --- Organisation Units
+    /** @return array<string, string[]> Organisation Unit => [Child Organisation Units] */
+    public function organisationUnitChildren(): array
+    {
+        return $this->makeList($this->organisationUnits, OrganisationUnit::KEY_FIELD, 'children', OrganisationUnit::KEY_FIELD);
+    }
+
+    /** @return array<string, ?int> Organisation Unit => Cost Centre */
+    public function organisationUnitCostCentre(): array
+    {
+        return $this->makeList($this->organisationUnits, OrganisationUnit::KEY_FIELD, 'costCentre', CostCentre::KEY_FIELD);
+    }
+
+    /** @returns array<string, string[]> Organisation Unit => [Child Organisation Units], deeply nested */
+    public function organisationUnitHierarchy(): array
+    {
+        return $this->makeHierarchy($this->organisationUnits);
+    }
+
+    /** @return array<string, string[]> Organisation Unit => [Parent Organisation Units] */
+    public function organisationUnitParents(): array
+    {
+        return $this->makeList($this->organisationUnits, OrganisationUnit::KEY_FIELD, 'parents', OrganisationUnit::KEY_FIELD);
+    }
+
+    /** @return array<string, string[]> Organisation Unit => [E-mails] */
+    public function organisationUnitPeople(): array
+    {
+        return $this->makeList($this->organisationUnits, OrganisationUnit::KEY_FIELD, 'people', Person::KEY_FIELD);
+    }
+
+    /** @return array<string, string[]> Organisation Unit => [Upns] */
+    public function organisationUnitUpns(): array
+    {
+        return $this->makeList($this->organisationUnits, OrganisationUnit::KEY_FIELD, 'upns', Upn::KEY_FIELD);
+    }
+
     // --- People
     /** @returns array<string, string[]> E-mail => [Child E-mails] */
     public function personChildren(): array
@@ -219,14 +279,21 @@ class OrgPlus
     }
 
     /** @returns array<string, ?int> E-mail => Cost Centre */
-    public function personCostCentres(): array
+    public function personCostCentre(): array
     {
         return $this->makeList($this->people, Person::KEY_FIELD, 'costCentre', CostCentre::KEY_FIELD);
     }
 
+    /** @returns array<string, string[] E-mail => [Child E-mails], deeply nested */
     public function personHierarchy(): array
     {
         return $this->makeHierarchy($this->people);
+    }
+
+    /** @returns array<string, string[]> E-mail => Organisation Unit */
+    public function personOrganisationUnit(): array
+    {
+        return $this->makeList($this->people, Person::KEY_FIELD, 'organisationUnit', OrganisationUnit::KEY_FIELD);
     }
 
     /** @returns array<string, string[]> E-mail => [Parent E-mails] */
@@ -236,7 +303,7 @@ class OrgPlus
     }
 
     /** @returns array<string, ?string> E-mail => Upn */
-    public function personUpns(): array
+    public function personUpn(): array
     {
         return $this->makeList($this->people, Person::KEY_FIELD, 'upn', Upn::KEY_FIELD);
     }
@@ -254,9 +321,16 @@ class OrgPlus
         return $this->makeList($this->upns, Upn::KEY_FIELD, 'costCentre', CostCentre::KEY_FIELD);
     }
 
+    /** @returns array<string, string[]> Upn => [Child Upns], deeply nested */
     public function upnHierarchy(): array
     {
         return $this->makeHierarchy($this->upns);
+    }
+
+    /** @returns array<string, string[]> Upn => Organisation Unit */
+    public function upnOrganisationUnit(): array
+    {
+        return $this->makeList($this->upns, Upn::KEY_FIELD, 'organisationUnit', OrganisationUnit::KEY_FIELD);
     }
 
     /** @returns array<string, ?string> Upn => [Parent Upns] */
