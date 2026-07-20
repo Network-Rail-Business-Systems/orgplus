@@ -15,6 +15,40 @@ class GenerateHierarchyTest extends TestCase
             base_path('/tests/Data/hierarchy.csv'),
         );
 
+        // Cost Centres
+        $this->assertEmpty($this->orgPlus->costCentres[12345]->parents);
+        $this->assertArrayHasKey(23456, $this->orgPlus->costCentres[12345]->children);
+        $this->assertArrayHasKey(34567, $this->orgPlus->costCentres[12345]->children);
+
+        $this->assertArrayHasKey(12345, $this->orgPlus->costCentres[23456]->parents);
+        $this->assertArrayHasKey(45678, $this->orgPlus->costCentres[23456]->children);
+
+        $this->assertArrayHasKey(12345, $this->orgPlus->costCentres[34567]->parents);
+        $this->assertArrayHasKey(56789, $this->orgPlus->costCentres[34567]->children);
+
+        $this->assertArrayHasKey(23456, $this->orgPlus->costCentres[45678]->parents);
+        $this->assertEmpty($this->orgPlus->costCentres[45678]->children);
+
+        $this->assertArrayHasKey(34567, $this->orgPlus->costCentres[56789]->parents);
+        $this->assertEmpty($this->orgPlus->costCentres[56789]->children);
+
+        // Organisation Units
+        $this->assertEmpty($this->orgPlus->organisationUnits['Aaa']->parents);
+        $this->assertArrayHasKey('Bbb', $this->orgPlus->organisationUnits['Aaa']->children);
+        $this->assertArrayHasKey('Ddd', $this->orgPlus->organisationUnits['Aaa']->children);
+
+        $this->assertArrayHasKey('Aaa', $this->orgPlus->organisationUnits['Bbb']->parents);
+        $this->assertArrayHasKey('Ccc', $this->orgPlus->organisationUnits['Bbb']->children);
+
+        $this->assertArrayHasKey('Bbb', $this->orgPlus->organisationUnits['Ccc']->parents);
+        $this->assertEmpty($this->orgPlus->organisationUnits['Ccc']->children);
+
+        $this->assertArrayHasKey('Aaa', $this->orgPlus->organisationUnits['Ddd']->parents);
+        $this->assertArrayHasKey('Eee', $this->orgPlus->organisationUnits['Ddd']->children);
+
+        $this->assertArrayHasKey('Ddd', $this->orgPlus->organisationUnits['Eee']->parents);
+        $this->assertEmpty($this->orgPlus->organisationUnits['Eee']->children);
+
         // Upns
         $this->assertEmpty($this->orgPlus->upns['A123']->parents);
         $this->assertArrayHasKey('A234', $this->orgPlus->upns['A123']->children);
@@ -40,21 +74,6 @@ class GenerateHierarchyTest extends TestCase
 
         $this->assertArrayHasKey('A789', $this->orgPlus->upns['A890']->parents);
         $this->assertEmpty($this->orgPlus->upns['A890']->children);
-
-        // Cost Centres
-        $this->assertEmpty($this->orgPlus->costCentres[12345]->parents);
-        $this->assertArrayHasKey(23456, $this->orgPlus->costCentres[12345]->children);
-        $this->assertArrayHasKey(34567, $this->orgPlus->costCentres[12345]->children);
-
-        $this->assertArrayHasKey(12345, $this->orgPlus->costCentres[23456]->parents);
-        $this->assertArrayHasKey(45678, $this->orgPlus->costCentres[23456]->children);
-
-        $this->assertArrayHasKey(12345, $this->orgPlus->costCentres[34567]->parents);
-        $this->assertArrayHasKey(56789, $this->orgPlus->costCentres[34567]->children);
-
-        $this->assertArrayHasKey(23456, $this->orgPlus->costCentres[45678]->parents);
-
-        $this->assertArrayHasKey(34567, $this->orgPlus->costCentres[56789]->parents);
 
         // People
         $this->assertEmpty($this->orgPlus->people['a@b.com']->parents);

@@ -17,7 +17,7 @@ class AddCostCentreTest extends TestCase
         parent::setUp();
 
         $this->costCentre = new CostCentre();
-        $this->costCentre->code = 12345;
+        $this->costCentre->number = 12345;
 
         $this->upn = new Upn();
         $this->upn->addCostCentre($this->costCentre);
@@ -27,7 +27,7 @@ class AddCostCentreTest extends TestCase
     {
         $this->assertEquals(
             12345,
-            $this->upn->costCentre->code,
+            $this->upn->costCentre->number,
         );
     }
 }

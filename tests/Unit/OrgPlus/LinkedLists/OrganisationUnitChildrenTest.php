@@ -1,0 +1,45 @@
+<?php
+
+namespace NetworkRailBusinessSystems\OrgPlus\Tests\Unit\OrgPlus\LinkedLists;
+
+use NetworkRailBusinessSystems\OrgPlus\OrgPlus;
+use NetworkRailBusinessSystems\OrgPlus\Tests\TestCase;
+
+class OrganisationUnitChildrenTest extends TestCase
+{
+    protected array $list;
+
+    protected OrgPlus $orgPlus;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->orgPlus = OrgPlus::import(
+            base_path('/tests/Data/hierarchy.csv'),
+        );
+
+        $this->list = $this->orgPlus->organisationUnitChildren();
+    }
+
+    public function test(): void
+    {
+        $this->assertEquals(
+            [
+                'Aaa' => [
+                    'Bbb',
+                    'Ddd',
+                ],
+                'Bbb' => [
+                    'Ccc',
+                ],
+                'Ccc' => [],
+                'Ddd' => [
+                    'Eee',
+                ],
+                'Eee' => [],
+            ],
+            $this->list,
+        );
+    }
+}

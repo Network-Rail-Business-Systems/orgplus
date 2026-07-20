@@ -2,6 +2,7 @@
 
 namespace NetworkRailBusinessSystems\OrgPlus\Tests\Unit\OrgPlus\LinkedLists;
 
+use NetworkRailBusinessSystems\OrgPlus\CostCentre;
 use NetworkRailBusinessSystems\OrgPlus\OrgPlus;
 use NetworkRailBusinessSystems\OrgPlus\Tests\TestCase;
 
@@ -35,7 +36,7 @@ class MakeListTest extends TestCase
                 45678 => [],
                 56789 => [],
             ],
-            $this->orgPlus->makeList($this->orgPlus->costCentres, 'code', 'children', 'code'),
+            $this->orgPlus->makeList($this->orgPlus->costCentres, CostCentre::KEY_FIELD, 'children', CostCentre::KEY_FIELD),
         );
     }
 
@@ -52,7 +53,7 @@ class MakeListTest extends TestCase
                 'A789' => 34567,
                 'A890' => 56789,
             ],
-            $this->orgPlus->makeList($this->orgPlus->upns, 'code', 'costCentre', 'code'),
+            $this->orgPlus->makeList($this->orgPlus->upns, 'code', 'costCentre', CostCentre::KEY_FIELD),
         );
     }
 }

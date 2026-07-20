@@ -22,7 +22,7 @@ class AddRelationTest extends TestCase
         $this->model = new Upn();
 
         $this->costCentre = new CostCentre();
-        $this->costCentre->code = 12345;
+        $this->costCentre->number = 12345;
 
         $this->person = new Person();
         $this->person->email = 'a@b.com';
@@ -40,8 +40,8 @@ class AddRelationTest extends TestCase
         $this->model->addRelation($this->costCentre, 'costCentre');
 
         $this->assertEquals(
-            $this->costCentre->code,
-            $this->model->costCentre->code,
+            $this->costCentre->number,
+            $this->model->costCentre->number,
         );
     }
 
