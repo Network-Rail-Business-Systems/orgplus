@@ -96,6 +96,18 @@ Cost Centres are related to:
 * One Organisation Unit
 * One UPN
 
+### Counts
+
+Per the hierarchy model, each OrgPlus object "contains" another set of models.
+
+You can check how many OrgPlus objects are contained on a level using the `contentsCount()`, `contentsChildrenCount()` and `contentsDescendantsCount()` methods.
+
+For example, a `Upn` contains `People`, and so would return the number of `People` that `Upn` has:
+
+* Calling `contentsCount()` would return the number of `People` who have that `Upn`
+* Calling `contentsChildrenCount()` is per `contentsCount()` plus the number of `People` the immediate children of the `Upn` has
+* Calling `contentsDescendantsCount()` is per `contentsChildrenCount()`, recurring down through the hierarchy
+
 ## Linked lists
 
 You can parse the libraries of models yourself, or you can produce a linked list of values for quick reference.

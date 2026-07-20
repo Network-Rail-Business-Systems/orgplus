@@ -62,4 +62,10 @@ class OrganisationUnit extends OrgPlusModel
             }
         }
     }
+
+    // Counts
+    public function contents(): array
+    {
+        return $this->upns;
+    }
 }

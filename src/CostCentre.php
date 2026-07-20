@@ -63,4 +63,10 @@ class CostCentre extends OrgPlusModel
             }
         }
     }
+
+    // Counts
+    public function contents(): array
+    {
+        return $this->organisationUnits;
+    }
 }

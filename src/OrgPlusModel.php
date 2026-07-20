@@ -96,4 +96,34 @@ abstract class OrgPlusModel
 
         return $map;
     }
+
+    // Counts
+    abstract public function contents(): array;
+
+    public function contentsCount(): int
+    {
+        return count($this->contents());
+    }
+
+    public function contentsChildrenCount(): int
+    {
+        $count = $this->contentsCount();
+
+        foreach ($this->children as $child) {
+            $count += $child->contentsCount();
+        }
+
+        return $count;
+    }
+
+    public function contentsDescendantsCount(): int
+    {
+        $count = $this->contentsCount();
+
+        foreach ($this->children as $child) {
+            $count += $child->contentsDescendantsCount();
+        }
+
+        return $count;
+    }
 }
