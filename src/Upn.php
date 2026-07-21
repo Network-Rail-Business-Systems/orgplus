@@ -159,4 +159,10 @@ class Upn extends OrgPlusModel
         $this->addParent($parent);
         $parent->addChild($this);
     }
+
+    // Counts
+    public function contents(): array
+    {
+        return $this->people;
+    }
 }

@@ -110,4 +110,10 @@ class Person extends OrgPlusModel
                 : $this->findParentUpnWithPeople($parent);
         }
     }
+
+    // Counts
+    public function contents(): array
+    {
+        return [];
+    }
 }
